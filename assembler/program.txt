@@ -1,0 +1,186 @@
+
+*d1 : b00001111
+*d2 : xAf
+
+add A
+
+;G  I  O  R  G  O     P  A  P  A  M  I  C  H  A  I  L
+;47 49 4F 52 47 4F 20 50 41 50 41 4D 49 43 48 41 49 4C
+
+;Store 'G' to d1
+MOV A, x47
+mov *d1, A
+
+;store 'I' - 5 to d2
+mov ACC1, b01001001
+mov acc2, 5
+
+sub A
+
+mov *d2, A
+
+
+;print G
+mov C, *d1
+PRT
+
+;if jump fails we print dump
+mov C, x47
+jmp save_the_print
+PRT
+
+;So we thake the d2 and see if its lowere than 'I' if it is then we add to it 5 and print it else terminate program
+- save_the_print
+;cmp *d2, b01001001
+;jb print_I
+
+;PRT
+
+;jmp terminate
+- print_I
+mov ACC1, *d2
+mov ACC2, 5
+
+add B
+
+mov c, b
+
+prt
+
+; shit the O Left and right then print
+mov ACC1, x4f
+
+shl ACC1, 1 ;10011110
+shr acc1, 1 ;01001111
+
+mov acc2, 0
+
+add C
+
+prt
+
+;NOW we have GIO
+
+
+;if we have an overflow print 'R'
+mov A, 255
+mov B, 255
+
+add A, B; now A is 11111110
+
+jc overflowmet
+
+mov c, x49
+prt
+
+mov c, x30
+prt
+
+
+- overflowmet
+;A = 11111110
+;'R'=01010010
+
+;          11111110
+mov acc1, xAC
+
+
+xor A, acc1
+
+
+mov C, A
+prt
+
+; print G that was stored at d1
+mov C, *d1
+mov C, *d1
+prt
+
+;print 'O' by doing and to ff and 'o'
+mov acc1, b11111111
+mov acc2, b01001111
+
+and c
+
+prt
+
+;printing space wich is x20
+mov A, x02
+shl A, 4
+
+mov C, a
+mov C, a
+
+prt
+
+
+;now we will try to print papa with like a loop
+
+mov A, 0
+
+jmp printP
+
+
+mov C, x30
+prt
+mov C, x30
+prt
+mov C, x30
+prt
+mov C, x30
+prt
+mov C, x30
+prt
+
+
+
+
+
+- printP
+    mov C, x50
+    prt
+
+    jmp printA
+
+
+- printA
+    mov C, x41
+    prt
+
+    inc a, a
+
+    cmp A, 1
+    jbe printP
+
+;print M
+mov C, x4d
+prt
+
+;print I
+mov C, x49
+prt
+
+;print C
+mov C, x43
+prt
+
+;print H
+mov C, x48
+prt
+
+;print A
+mov C, x41
+prt
+
+;print I
+mov C, x49
+prt
+
+
+;now the user must succed his name
+in c
+mov c,c
+prt
+
+-terminate
+HLT
