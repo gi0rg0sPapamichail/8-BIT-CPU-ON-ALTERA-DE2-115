@@ -1,17 +1,16 @@
-
 *d1 : b00001111
 *d2 : xAf
 
 add A
 
-;G  I  O  R  G  O     P  A  P  A  M  I  C  H  A  I  L
-;47 49 4F 52 47 4F 20 50 41 50 41 4D 49 43 48 41 49 4C
+; G  I  O  R  G  O      P  A  P  A  M  I  C  H  A  I  L
+; 47 49 4F 52 47 4F 20 50 41 50 41 4D 49 43 48 41 49 4C
 
-;Store 'G' to d1
+; Αποθήκευση του 'G' στο d1
 MOV A, x47
 mov *d1, A
 
-;store 'I' - 5 to d2
+; Αποθήκευση του 'I' - 5 στο d2
 mov ACC1, b01001001
 mov acc2, 5
 
@@ -19,17 +18,17 @@ sub A
 
 mov *d2, A
 
-
-;print G
+; Εκτύπωση του G
 mov C, *d1
 PRT
 
-;if jump fails we print dump
+; Αν το jump αποτύχει, εκτυπώνουμε dump
 mov C, x47
 jmp save_the_print
 PRT
 
-;So we thake the d2 and see if its lowere than 'I' if it is then we add to it 5 and print it else terminate program
+; Παίρνουμε το d2 και ελέγχουμε αν είναι μικρότερο από 'I'. 
+; Αν είναι, προσθέτουμε 5 και το εκτυπώνουμε, αλλιώς τερματίζουμε.
 - save_the_print
 ;cmp *d2, b01001001
 ;jb print_I
@@ -47,11 +46,11 @@ mov c, b
 
 prt
 
-; shit the O Left and right then print
+; Shift το 'O' αριστερά και δεξιά και μετά εκτύπωση
 mov ACC1, x4f
 
-shl ACC1, 1 ;10011110
-shr acc1, 1 ;01001111
+shl ACC1, 1 ; 10011110
+shr acc1, 1 ; 01001111
 
 mov acc2, 0
 
@@ -59,14 +58,13 @@ add C
 
 prt
 
-;NOW we have GIO
+; Τώρα έχουμε "GIO"
 
-
-;if we have an overflow print 'R'
+; Αν έχουμε overflow, εκτύπωσε το 'R'
 mov A, 255
 mov B, 255
 
-add A, B; now A is 11111110
+add A, B    ; Τώρα το A είναι 11111110
 
 jc overflowmet
 
@@ -76,27 +74,24 @@ prt
 mov c, x30
 prt
 
-
 - overflowmet
-;A = 11111110
-;'R'=01010010
+; A = 11111110
+; 'R' = 01010010
 
-;          11111110
+;            11111110
 mov acc1, xAC
 
-
 xor A, acc1
-
 
 mov C, A
 prt
 
-; print G that was stored at d1
+; Εκτύπωση του G που αποθηκεύτηκε στο d1
 mov C, *d1
 mov C, *d1
 prt
 
-;print 'O' by doing and to ff and 'o'
+; Εκτύπωση του 'O' κάνοντας AND στο FF και στο 'O'
 mov acc1, b11111111
 mov acc2, b01001111
 
@@ -104,7 +99,7 @@ and c
 
 prt
 
-;printing space wich is x20
+; Εκτύπωση κενού (space) που είναι x20
 mov A, x02
 shl A, 4
 
@@ -113,14 +108,11 @@ mov C, a
 
 prt
 
-
-;now we will try to print papa with like a loop
-
+; Προσπάθεια εκτύπωσης του "PAPA" με loop
 mov A, 0
 
 jmp printP
 
-
 mov C, x30
 prt
 mov C, x30
@@ -131,17 +123,12 @@ mov C, x30
 prt
 mov C, x30
 prt
-
-
-
-
 
 - printP
     mov C, x50
     prt
 
     jmp printA
-
 
 - printA
     mov C, x41
@@ -152,32 +139,31 @@ prt
     cmp A, 1
     jbe printP
 
-;print M
+; Εκτύπωση M
 mov C, x4d
 prt
 
-;print I
+; Εκτύπωση I
 mov C, x49
 prt
 
-;print C
+; Εκτύπωση C
 mov C, x43
 prt
 
-;print H
+; Εκτύπωση H
 mov C, x48
 prt
 
-;print A
+; Εκτύπωση A
 mov C, x41
 prt
 
-;print I
+; Εκτύπωση I
 mov C, x49
 prt
 
-
-;now the user must succed his name
+; Τώρα ο χρήστης πρέπει να εισάγει το όνομά του
 in c
 mov c,c
 prt
