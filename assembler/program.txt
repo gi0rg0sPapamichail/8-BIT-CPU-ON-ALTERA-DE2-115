@@ -1,3 +1,8 @@
+; ***************************************************************
+; Project: Name Display & Logic Operations
+; Author:  GIORGO PAPAMICHAIL
+; ***************************************************************
+
 *d1 : b00001111
 *d2 : xAf
 
@@ -6,11 +11,11 @@ add A
 ; G  I  O  R  G  O      P  A  P  A  M  I  C  H  A  I  L
 ; 47 49 4F 52 47 4F 20 50 41 50 41 4D 49 43 48 41 49 4C
 
-; Αποθήκευση του 'G' στο d1
+; Store 'G' to address d1
 MOV A, x47
 mov *d1, A
 
-; Αποθήκευση του 'I' - 5 στο d2
+; Store 'I' minus 5 to address d2
 mov ACC1, b01001001
 mov acc2, 5
 
@@ -18,17 +23,18 @@ sub A
 
 mov *d2, A
 
-; Εκτύπωση του G
+
+; Print character G
 mov C, *d1
 PRT
 
-; Αν το jump αποτύχει, εκτυπώνουμε dump
+; If jump fails, we print dump
 mov C, x47
 jmp save_the_print
 PRT
 
-; Παίρνουμε το d2 και ελέγχουμε αν είναι μικρότερο από 'I'. 
-; Αν είναι, προσθέτουμε 5 και το εκτυπώνουμε, αλλιώς τερματίζουμε.
+; Take d2 and check if it's lower than 'I'
+; If it is, add 5 and print it, else terminate
 - save_the_print
 ;cmp *d2, b01001001
 ;jb print_I
@@ -46,11 +52,11 @@ mov c, b
 
 prt
 
-; Shift το 'O' αριστερά και δεξιά και μετά εκτύπωση
+; Shift 'O' Left and Right then print
 mov ACC1, x4f
 
-shl ACC1, 1 ; 10011110
-shr acc1, 1 ; 01001111
+shl ACC1, 1 ; Result: 10011110
+shr acc1, 1 ; Result: 01001111
 
 mov acc2, 0
 
@@ -58,13 +64,14 @@ add C
 
 prt
 
-; Τώρα έχουμε "GIO"
+; Now we have "GIO"
 
-; Αν έχουμε overflow, εκτύπωσε το 'R'
+
+; If we have an overflow, print 'R'
 mov A, 255
 mov B, 255
 
-add A, B    ; Τώρα το A είναι 11111110
+add A, B; Now A is 11111110 (after overflow)
 
 jc overflowmet
 
@@ -74,24 +81,26 @@ prt
 mov c, x30
 prt
 
+
 - overflowmet
-; A = 11111110
-; 'R' = 01010010
+; A = 11111110, 'R' = 01010010
 
 ;            11111110
 mov acc1, xAC
 
+
 xor A, acc1
+
 
 mov C, A
 prt
 
-; Εκτύπωση του G που αποθηκεύτηκε στο d1
+; Print 'G' that was stored at d1
 mov C, *d1
 mov C, *d1
 prt
 
-; Εκτύπωση του 'O' κάνοντας AND στο FF και στο 'O'
+; Print 'O' by performing AND with FF and 'O'
 mov acc1, b11111111
 mov acc2, b01001111
 
@@ -99,7 +108,7 @@ and c
 
 prt
 
-; Εκτύπωση κενού (space) που είναι x20
+; Printing space character (x20)
 mov A, x02
 shl A, 4
 
@@ -108,11 +117,14 @@ mov C, a
 
 prt
 
-; Προσπάθεια εκτύπωσης του "PAPA" με loop
+
+; Loop attempt to print "PAPA"
+
 mov A, 0
 
 jmp printP
 
+
 mov C, x30
 prt
 mov C, x30
@@ -123,12 +135,14 @@ mov C, x30
 prt
 mov C, x30
 prt
+
 
 - printP
     mov C, x50
     prt
 
     jmp printA
+
 
 - printA
     mov C, x41
@@ -139,31 +153,32 @@ prt
     cmp A, 1
     jbe printP
 
-; Εκτύπωση M
+; Print M
 mov C, x4d
 prt
 
-; Εκτύπωση I
+; Print I
 mov C, x49
 prt
 
-; Εκτύπωση C
+; Print C
 mov C, x43
 prt
 
-; Εκτύπωση H
+; Print H
 mov C, x48
 prt
 
-; Εκτύπωση A
+; Print A
 mov C, x41
 prt
 
-; Εκτύπωση I
+; Print I
 mov C, x49
 prt
 
-; Τώρα ο χρήστης πρέπει να εισάγει το όνομά του
+
+; User must input/confirm their name
 in c
 mov c,c
 prt
