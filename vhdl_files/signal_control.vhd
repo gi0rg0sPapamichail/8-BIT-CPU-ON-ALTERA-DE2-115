@@ -209,14 +209,20 @@ begin
 					when ST_OP 	 => 
 						state <= ST_1;
 						data_bus_sel <= register_mux_sel;
+						if instruction(15 downto 8) = ACC1_REG then
+							acc1_ld <= '0';
+						else
+							acc1_ld <= '1';
+						end if;
 						case instruction(15 downto 8) is
 							when A_REG => mux_sel <= A_sel;
 							when B_REG => mux_sel <= B_sel;
 							when C_REG => mux_sel <= C_sel;
-							when others => state <= FETCH1;
+							when ACC1_REG => state <= ST_1; --do nothing
+							when others => state <= FETCH1; acc1_ld <= '0';
 						end case;
 						ram_addr <= instruction(23 downto 16);
-						acc1_ld <= '1';
+						
 
 						
 						
@@ -574,14 +580,14 @@ begin
 						end if;
 						
 					when IN_OP =>
-						if confirm = '0' then
-							prev_confirm <= '1';
-						elsif prev_confirm = '1' and confirm = '1' then
+						if confirm = '1' then
 							prev_confirm <= '0';
+						elsif prev_confirm = '0' and confirm = '0' then
+							prev_confirm <= '1';
 							var <= user_input;
 							state <= IN_1;
 						else
-							state <= DECODE;
+							state <= FETCH1;
 						end if;
 
 									
